@@ -82,13 +82,21 @@ window.addEventListener('DOMContentLoaded', () => {
             const editBtn = document.createElement('button');
             editBtn.type = 'button';
             editBtn.className = 'edit-btn';
-            // image icon (editicon.png should be in the same folder)
-            const editImg = document.createElement('img');
-            editImg.src = 'editicon.png';
-            editImg.alt = 'Edit';
-            editImg.title = 'Edit item';
-            editImg.className = 'edit-icon';
-            editBtn.appendChild(editImg);
+            // Inline SVG icon (replaces external PNG) - uses currentColor for easy theming
+            editBtn.setAttribute('aria-label', 'Edit item');
+            editBtn.title = 'Edit item';
+            const svgNS = 'http://www.w3.org/2000/svg';
+            const svg = document.createElementNS(svgNS, 'svg');
+            svg.setAttribute('viewBox', '0 0 24 24');
+            svg.setAttribute('class', 'edit-icon');
+            svg.setAttribute('aria-hidden', 'true');
+            svg.setAttribute('focusable', 'false');
+            const path = document.createElementNS(svgNS, 'path');
+            // pencil/edit icon path (Material-like)
+            path.setAttribute('d', 'M3 17.25V21h3.75L17.81 9.94l-3.75-3.75L3 17.25zM20.71 7.04a1.003 1.003 0 0 0 0-1.42l-2.34-2.34a1.003 1.003 0 0 0-1.42 0l-1.83 1.83 3.75 3.75 1.84-1.82z');
+            path.setAttribute('fill', 'currentColor');
+            svg.appendChild(path);
+            editBtn.appendChild(svg);
             editBtn.addEventListener('click', (e) => {
                 e.stopPropagation();
                 const inputEdit = document.createElement('input');

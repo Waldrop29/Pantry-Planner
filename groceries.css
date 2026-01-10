@@ -171,15 +171,62 @@ html, body {
         .edit-btn:hover, .edit-btn:active {
             background: rgba(0,0,0,0.04);
         }
-        .edit-btn img.edit-icon {
+        /* SVG-based edit icon (tints via currentColor) */
+        .edit-btn {
+            background: transparent;
+            border: none;
+            padding: 6px;
+            margin-left: 8px;
+            cursor: pointer;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 6px;
+            color: #007bff; /* icon color */
+        }
+        .edit-btn:hover, .edit-btn:active {
+            background: rgba(0,0,0,0.04);
+        }
+        .edit-btn .edit-icon {
             width: 20px;
             height: 20px;
-            object-fit: contain;
             display: block;
+            fill: currentColor;
         }
         @media (max-width: 500px) {
-            .edit-btn img.edit-icon { width: 24px; height: 24px; }
+            .edit-btn .edit-icon { width: 24px; height: 24px; }
             .edit-btn { padding: 8px; }
+        }
+        /* dark mode tint for edit icon */
+        body.dark-mode .edit-btn { color: #66aaff; }
+        /* Inline edit input styling */
+        .item-text {
+            flex: 1 1 auto;
+            min-width: 0; /* allow text to truncate instead of growing container */
+            margin-right: 8px;
+        }
+        .edit-input {
+            flex: 1 1 auto;
+            min-width: 0;
+            padding: 10px 12px;
+            font-size: 1.05em;
+            border: 1px solid #ccc;
+            border-radius: 6px;
+            transition: border-color 0.15s ease, box-shadow 0.15s ease;
+        }
+        .edit-input:focus {
+            border-color: #007bff;
+            outline: none;
+            box-shadow: 0 0 0 3px rgba(0,123,255,0.12);
+        }
+        @media (max-width: 500px) {
+            .edit-input { padding: 12px; font-size: 1em; }
+        }
+        /* Dark mode for inline edit */
+        body.dark-mode .edit-input {
+            background: #23272a;
+            color: #f1f3f4;
+            border-color: #444;
         }
         /* Dark mode styles */
         body.dark-mode {
