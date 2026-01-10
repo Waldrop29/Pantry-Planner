@@ -1,158 +1,195 @@
- // Load from localStorage on startup
+// Consolidated grocery list app script
+// Features: two lists (groceries, struckGroceries), inline edit, delete (only on main list),
+// move-to-struck by clicking item text (with animation), undo history, dark mode, localStorage.
+
+window.addEventListener('DOMContentLoaded', () => {
+    const HISTORY_LIMIT = 200;
+
+    // Load from localStorage
     let groceries = JSON.parse(localStorage.getItem('groceries') || '[]');
-    groceries = groceries.map(item =>
-        typeof item === 'string' ? { text: item } : item
-    );
+    groceries = groceries.map(item => (typeof item === 'string' ? { text: item } : item));
     let struckGroceries = JSON.parse(localStorage.getItem('struckGroceries') || '[]');
 
-    // Undo history stacks
+    // Undo history stacks (store JSON snapshots)
     let groceriesHistory = [];
     let struckGroceriesHistory = [];
+
+    // Element refs
     const list = document.getElementById('groceries');
+    const struckList = document.getElementById('struckList');
     const input = document.getElementById('itemInput');
     const button = document.getElementById('button');
+    const delAllBtn = document.getElementById('del-all-btn');
+    const undoBtn = document.getElementById('undo-btn');
+    const darkModeBtn = document.getElementById('darkModeToggle');
 
-    function renderList() {
-        list.innerHTML = '';
-        groceries.forEach((item) => {
-            const li = document.createElement('li');
-            const textSpan = document.createElement('span');
-            textSpan.textContent = item.text;
-            textSpan.style.textDecoration = 'none';
-            if (item.struck) {
-                li.classList.add("fade-in");
-                struckList.appendChild(li);
-                } else {
-                li.classList.add("fade-in"); // ← Add this line
-                list.appendChild(li);
-            }
-
-            textSpan.onclick = function() {
-                struckGroceries.push(item);
-                groceries = groceries.filter(g => g !== item);
-                saveAndRender();
-                // Animate the newly added struck item
-                setTimeout(() => {
-                    const struckList = document.getElementById('struckList');
-                    if (struckList && struckList.lastChild) {
-                        struckList.lastChild.classList.add('struck-animate');
-                    }
-                }, 50);
-            };
-            const delBtn = document.createElement('button');
-            delBtn.textContent = 'Delete';
-            delBtn.className = 'delete-btn';
-            delBtn.onclick = function(event) {
-                event.stopPropagation();
-                if (confirm('Are you sure you want to delete this item?')) {
-                    function deleteItem(index) {
-                    const listItems = document.querySelectorAll("li");
-                    const li = listItems[index];
-
-                    li.classList.add("fade-out");
-
-                    // Wait for animation to finish before removing
-                    setTimeout(() => {
-                        groceries.splice(index, 1);
-                        saveGroceries(groceries);
-                        renderGroceries();
-                    }, 300); // Match animation duration
-                    deleteItem(index)
-                    }
-
-                    groceries = groceries.filter(g => g !== item);
-                    saveAndRender();
-                }
-            };
-            li.appendChild(textSpan);
-            li.appendChild(delBtn);
-            list.appendChild(li);
-        });
-        if (groceries.length === 0) {
-            itemInput.placeholder = "Nothing yet! Add something tasty!";
-            } else {
-            itemInput.placeholder = "Add a grocery item";
-        }
-
-    }
-
-
-
-    function saveAndRender() {
-        // Save current state to history before changing
+    function pushHistory() {
         groceriesHistory.push(JSON.stringify(groceries));
         struckGroceriesHistory.push(JSON.stringify(struckGroceries));
+        if (groceriesHistory.length > HISTORY_LIMIT) groceriesHistory.shift();
+        if (struckGroceriesHistory.length > HISTORY_LIMIT) struckGroceriesHistory.shift();
+    }
+
+    function undo() {
+        if (groceriesHistory.length === 0 && struckGroceriesHistory.length === 0) return;
+        // Pop latest snapshots if available
+        if (groceriesHistory.length) groceries = JSON.parse(groceriesHistory.pop());
+        if (struckGroceriesHistory.length) struckGroceries = JSON.parse(struckGroceriesHistory.pop());
+        saveAndRender(false);
+    }
+
+    function saveAndRender(push = false) {
+        if (push) pushHistory();
         localStorage.setItem('groceries', JSON.stringify(groceries));
         localStorage.setItem('struckGroceries', JSON.stringify(struckGroceries));
         renderList();
         renderStruckList();
     }
 
-    // Undo function
-    function undo() {
-        if (groceriesHistory.length > 0 && struckGroceriesHistory.length > 0) {
-            groceries = JSON.parse(groceriesHistory.pop());
-            struckGroceries = JSON.parse(struckGroceriesHistory.pop());
-            localStorage.setItem('groceries', JSON.stringify(groceries));
-            localStorage.setItem('struckGroceries', JSON.stringify(struckGroceries));
-            renderList();
-            renderStruckList();
-        }
-    }
-
-    function checkList() {
+    function addItem() {
         const val = input.value.trim();
-        if (val === '') return;
+        if (!val) return;
+        pushHistory();
         groceries.push({ text: val });
         input.value = '';
         saveAndRender();
         input.focus();
     }
-    //delete all button
-    const delAllBtn = document.getElementById('del-all-btn')
-    delAllBtn.onclick = delAll
-        function delAll() {
-            struckGroceries = [];
-            saveAndRender();
-        }
 
-    //delete all with keyboard shortcut Ctrl+Shift+D
-    document.addEventListener('keydown', function(event) {
-        if (event.ctrlKey && event.shiftKey && event.key === 'D') {
-            delAll()
-        }
-        }); 
-    button.addEventListener('click', checkList);
-    input.addEventListener('keypress', function(e) {
-        if (e.key === 'Enter') checkList();
+    function renderList() {
+        if (!list) return;
+        list.innerHTML = '';
+        groceries.forEach((item, idx) => {
+            const li = document.createElement('li');
+
+            const textSpan = document.createElement('span');
+            textSpan.textContent = item.text;
+            textSpan.className = 'item-text';
+
+            // Click text -> move to struck list (with animation)
+            textSpan.addEventListener('click', () => {
+                pushHistory();
+                struckGroceries.push(item);
+                groceries.splice(idx, 1);
+                saveAndRender();
+                // add animation to the newly added struck item after render
+                setTimeout(() => {
+                    if (struckList && struckList.lastChild) struckList.lastChild.classList.add('struck-animate');
+                }, 50);
+            });
+
+            // Edit button (inline edit) - use an image icon inside the button
+            const editBtn = document.createElement('button');
+            editBtn.type = 'button';
+            editBtn.className = 'edit-btn';
+            // image icon (editicon.png should be in the same folder)
+            const editImg = document.createElement('img');
+            editImg.src = 'editicon.png';
+            editImg.alt = 'Edit';
+            editImg.title = 'Edit item';
+            editImg.className = 'edit-icon';
+            editBtn.appendChild(editImg);
+            editBtn.addEventListener('click', (e) => {
+                e.stopPropagation();
+                const inputEdit = document.createElement('input');
+                inputEdit.type = 'text';
+                inputEdit.value = item.text;
+                inputEdit.className = 'edit-input';
+                li.replaceChild(inputEdit, textSpan);
+                inputEdit.focus();
+
+                function saveEdit() {
+                    const newVal = inputEdit.value.trim();
+                    if (!newVal) {
+                        alert('Item text cannot be empty');
+                        inputEdit.focus();
+                        return;
+                    }
+                    pushHistory();
+                    groceries[idx].text = newVal;
+                    saveAndRender();
+                }
+
+                function cancelEdit() {
+                    renderList();
+                }
+
+                inputEdit.addEventListener('keydown', (ev) => {
+                    if (ev.key === 'Enter') saveEdit();
+                    if (ev.key === 'Escape') cancelEdit();
+                });
+            });
+
+            // Delete button (only on groceries list)
+            const delBtn = document.createElement('button');
+            delBtn.textContent = 'Delete';
+            delBtn.className = 'delete-btn';
+            delBtn.addEventListener('click', (e) => {
+                e.stopPropagation();
+                if (!confirm('Are you sure you want to delete this item?')) return;
+                pushHistory();
+                groceries.splice(idx, 1);
+                saveAndRender();
+            });
+
+            li.appendChild(textSpan);
+            li.appendChild(editBtn);
+            li.appendChild(delBtn);
+            list.appendChild(li);
+        });
+
+        // placeholder text handling
+        const itemInput = document.getElementById('itemInput');
+        if (itemInput) itemInput.placeholder = groceries.length === 0 ? 'Nothing yet! Add something tasty!' : 'Add a grocery item';
+    }
+
+    function renderStruckList() {
+        if (!struckList) return;
+        struckList.innerHTML = '';
+        struckGroceries.forEach((item, idx) => {
+            const li = document.createElement('li');
+            li.textContent = item.text;
+            li.className = 'struck';
+            // allow clicking a struck item to move it back to main list
+            li.addEventListener('click', () => {
+                pushHistory();
+                groceries.push(item);
+                struckGroceries.splice(idx, 1);
+                saveAndRender();
+            });
+            struckList.appendChild(li);
+        });
+    }
+
+    // Delete all struck items
+    function delAll() {
+        if (!struckGroceries || struckGroceries.length === 0) return;
+        if (!confirm('Are you sure you want to delete all acquired items?')) return;
+        pushHistory();
+        struckGroceries = [];
+        saveAndRender();
+    }
+
+    // Wiring events
+    if (delAllBtn) delAllBtn.addEventListener('click', delAll);
+    document.addEventListener('keydown', (event) => {
+        if (event.ctrlKey && event.shiftKey && event.key === 'D') delAll();
     });
 
-    // Initial render
-    renderList();
+    if (button) button.addEventListener('click', addItem);
+    if (input) input.addEventListener('keypress', (e) => { if (e.key === 'Enter') addItem(); });
 
-    // Add Undo button wiring
-    const undoBtn = document.getElementById('undo-btn');
-    if (undoBtn) {
-        undoBtn.onclick = undo;
+    if (undoBtn) undoBtn.addEventListener('click', undo);
+
+    // Dark mode toggle
+    function setDarkMode(on) {
+        document.body.classList.toggle('dark-mode', on);
+        localStorage.setItem('darkMode', on ? '1' : '0');
+        if (darkModeBtn) darkModeBtn.textContent = on ? 'Light Mode' : 'Dark Mode';
     }
-    
-        // Dark mode toggle logic
-        const darkModeBtn = document.getElementById('darkModeToggle');
-        function setDarkMode(on) {
-            document.body.classList.toggle('dark-mode', on);
-            localStorage.setItem('darkMode', on ? '1' : '0');
-            darkModeBtn.textContent = on ? 'Light Mode' : 'Dark Mode';
-        }
-        // Load dark mode preference
-        setDarkMode(localStorage.getItem('darkMode') === '1');
-        darkModeBtn.onclick = () => setDarkMode(!document.body.classList.contains('dark-mode'));
-        
-        function renderStruckList() {
-            const struckList = document.getElementById('struckList');
-            struckList.innerHTML = '';
-            struckGroceries.forEach(item => {
-                const li = document.createElement('li');
-                li.textContent = item.text;
-                struckList.appendChild(li);
-            });
-        }
+    setDarkMode(localStorage.getItem('darkMode') === '1');
+    if (darkModeBtn) darkModeBtn.addEventListener('click', () => setDarkMode(!document.body.classList.contains('dark-mode')));
+
+    // Initial render
+    saveAndRender(false);
+});
