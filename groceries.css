@@ -156,6 +156,31 @@ html, body {
         .delete-btn:hover, .delete-btn:active {
             background: #b52a37;
         }
+        /* Edit button as icon */
+        .edit-btn {
+            background: transparent;
+            border: none;
+            padding: 6px;
+            margin-left: 8px;
+            cursor: pointer;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 6px;
+        }
+        .edit-btn:hover, .edit-btn:active {
+            background: rgba(0,0,0,0.04);
+        }
+        .edit-btn img.edit-icon {
+            width: 20px;
+            height: 20px;
+            object-fit: contain;
+            display: block;
+        }
+        @media (max-width: 500px) {
+            .edit-btn img.edit-icon { width: 24px; height: 24px; }
+            .edit-btn { padding: 8px; }
+        }
         /* Dark mode styles */
         body.dark-mode {
             background: #181a1b;
