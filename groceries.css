@@ -1,3 +1,17 @@
+.fade-in {
+    opacity: 0;
+    animation: fadeIn 0.5s ease-in forwards;
+}
+
+@keyframes fadeIn {
+    to {
+        opacity: 1;
+    }
+}
+
+
+
+
 @keyframes fadeOut {
   from {
     opacity: 1;
@@ -19,7 +33,7 @@
 }
 
 .fade-in {
-  animation: fadeIn 0.3s ease-out;
+  animation: fadeIn 0.5s ease-out forwards;
 }
 
 
@@ -366,7 +380,7 @@ body.dark-mode #del-all-btn:hover, body.dark-mode #del-all-btn:active {
                 text-align: center;
                 font-size: 1.2em;
                 font-weight: bold;
-                background-color: #343a40;
+                background-color: #23272a;
                 box-shadow: 0 2px 12px rgba(0,0,0,0.25);
                 border-radius: 10px;
                 padding: 16px 20px 12px 20px;
@@ -405,4 +419,31 @@ body.dark-mode #del-all-btn:hover, body.dark-mode #del-all-btn:active {
         }
         #struckList li:last-child {
             border-bottom: none;
+        }
+        #deletemainlist {
+            background: #dc3545;
+            color: #fff;
+            border: none;
+            border-radius: 24px;
+            padding: 12px 22px;
+            font-size: 1.1em;
+            cursor: pointer;
+            transition: background 0.2s;
+            margin-top: 18px;
+            display: block;
+            width: 100%;
+            max-width: 300px;
+            margin-left: auto;
+            margin-right: auto;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+        }
+        #deletemainlist:hover, #deletemainlist:active {
+            background: #b52a37;
+        }
+        body.dark-mode #deletemainlist {
+            background: #b52a37;
+            color: #fff;
+        }
+        body.dark-mode #deletemainlist:hover, body.dark-mode #deletemainlist:active {
+            background: #dc3545;
         }

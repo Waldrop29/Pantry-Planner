@@ -5,6 +5,8 @@
 window.addEventListener('DOMContentLoaded', () => {
     const HISTORY_LIMIT = 200;
 
+    alert('Welcome to the Grocery List App! Click on an item to mark it as acquired. Use the edit button to change item text, and the delete button to remove items from the main list. You can undo recent changes with the undo button, and toggle dark mode for a different look. Happy shopping!');
+
     // Load from localStorage
     let groceries = JSON.parse(localStorage.getItem('groceries') || '[]');
     groceries = groceries.map(item => (typeof item === 'string' ? { text: item } : item));
@@ -61,6 +63,7 @@ window.addEventListener('DOMContentLoaded', () => {
         list.innerHTML = '';
         groceries.forEach((item, idx) => {
             const li = document.createElement('li');
+            li.classList.add('fade-in');
 
             const textSpan = document.createElement('span');
             textSpan.textContent = item.text;
@@ -197,6 +200,17 @@ window.addEventListener('DOMContentLoaded', () => {
     }
     setDarkMode(localStorage.getItem('darkMode') === '1');
     if (darkModeBtn) darkModeBtn.addEventListener('click', () => setDarkMode(!document.body.classList.contains('dark-mode')));
+
+    //Clear Main List logic
+    const delmainlistbtn = document.getElementById('deletemainlist');
+    document.addEventListener('click', (e) => {
+        if (e.target === delmainlistbtn) {
+            if (!confirm('Are you sure you want to clear the main list?')) return;
+                pushHistory();
+                groceries = [];
+                saveAndRender();
+        }
+    })
 
     // Initial render
     saveAndRender(false);
