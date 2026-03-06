@@ -205,12 +205,17 @@ window.addEventListener('DOMContentLoaded', () => {
     const delmainlistbtn = document.getElementById('deletemainlist');
     document.addEventListener('click', (e) => {
         if (e.target === delmainlistbtn) {
+            if (groceries.length === 0) {
+                return
+            }
+            else {
             if (!confirm('Are you sure you want to clear the main list?')) return;
                 pushHistory();
                 groceries = [];
                 saveAndRender();
         }
-    })
+    }
+})
 
     // Initial render
     saveAndRender(false);
