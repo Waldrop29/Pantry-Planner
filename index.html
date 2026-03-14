@@ -2,30 +2,37 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Grocery List App</title>
+    <title>Pantry Planner</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no, maximum-scale=1.0">
     <link rel="icon" type="image/x-icon" href="favicon.ico">
     <link rel="stylesheet" href="groceries.css">
 </head>
 <body>
+    <h1 id="pantryPlanner">Pantry Planner</h1>
     <div class="container">
         <button id="undo-btn">Undo</button>
-        <h1>Grocery List</h1>
+
+        <h1>Main List</h1>
+
         <div id="inputRow">
             <input type="text" id="itemInput" placeholder="Add a grocery item" autocomplete="off" />
             <button id="button">Add</button>
         </div>
-        <div id="container">
+
+        <!-- Clear Main List button -->
         <button id="deletemainlist">Clear Main List</button>
-        </div>
-    <ul id="groceries"></ul>
+
+        <ul id="groceries"></ul>
     </div>
+
     <div id="struckListContainer">
-        <button id="del-all-btn">Delete Acquired Items</button>        
+        <button id="del-all-btn">Delete Acquired Items</button>
         <h2 id="struckText">Acquired Items</h2>
         <ul id="struckList"></ul>
     </div>
+
     <button id="darkModeToggle">Dark Mode</button>
+
     <script src="groceries.js"></script>
 </body>
 </html>
