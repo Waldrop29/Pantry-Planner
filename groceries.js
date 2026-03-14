@@ -270,6 +270,7 @@ window.addEventListener("DOMContentLoaded", () => {
 
     delAllBtn.addEventListener("click", deleteAllStruck);
 
+
     delMainBtn.addEventListener("click", () => {
         if (!confirm("Clear the main list?")) return;
         pushHistory();
@@ -285,6 +286,31 @@ window.addEventListener("DOMContentLoaded", () => {
         if (event.ctrlKey && event.key.toLowerCase() === "z") undo();
         if (event.ctrlKey && event.shiftKey && event.key === "D") deleteAllStruck();
     });
+
+    // Dark mode toggle
+    function setDarkMode(on) {
+        document.body.classList.toggle('dark-mode', on);
+        localStorage.setItem('darkMode', on ? '1' : '0');
+        if (darkModeBtn) darkModeBtn.textContent = on ? 'Light Mode' : 'Dark Mode';
+    }
+    setDarkMode(localStorage.getItem('darkMode') === '1');
+    if (darkModeBtn) darkModeBtn.addEventListener('click', () => setDarkMode(!document.body.classList.contains('dark-mode')));
+
+    //Clear Main List logic
+    const delmainlistbtn = document.getElementById('deletemainlist');
+    document.addEventListener('click', (e) => {
+        if (e.target === delmainlistbtn) {
+            if (groceries.length === 0) {
+                return
+            }
+            else {
+            if (!confirm('Are you sure you want to clear the main list?')) return;
+                pushHistory();
+                groceries = [];
+                saveAndRender();
+        }
+    }
+})
 
     /* ---------------------------------------------------------
        INITIAL RENDER
