@@ -333,24 +333,24 @@ html, body {
                 font-size: 1em;
             }
         }
-        #del-all-btn {
-    background: #dc3545;
-    color: #fff;
-    border: none;
-    border-radius: 24px;
-    padding: 12px 22px;
-    font-size: 1.1em;
-    cursor: pointer;
-    transition: background 0.2s;
-    margin-top: 18px;
-    display: block;
-    width: 100%;
-    max-width: 300px;
-    margin-left: auto;
-    margin-right: auto;
-    box-shadow: 0 2px 8px rgba(0,0,0,0.08);
-    /* Remove position: fixed/absolute, bottom, left, z-index */
-}
+            #del-all-btn {
+                background: #dc3545;
+                color: #fff;
+                border: none;
+                border-radius: 24px;
+                padding: 12px 22px;
+                font-size: 1.1em;
+                cursor: pointer;
+                transition: background 0.2s;
+                margin-top: 18px;
+                display: block;
+                width: 100%;
+                max-width: 300px;
+                margin-left: auto;
+                margin-right: auto;
+                box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+        /* Remove position: fixed/absolute, bottom, left, z-index */
+                }
 #del-all-btn:hover, #del-all-btn:active {
     background: #b52a37;
 }

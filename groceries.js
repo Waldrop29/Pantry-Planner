@@ -1,12 +1,7 @@
-// Grocery List App (Stability‑Cleaned Version)
-// Same features, smoother behavior, fewer bugs.
-
 window.addEventListener("DOMContentLoaded", () => {
     const HISTORY_LIMIT = 200;
 
-    /* ---------------------------------------------------------
-       POPUP MESSAGE LOGIC
-    --------------------------------------------------------- */
+    // POPUP MESSAGE LOGIC
     const STORAGE_KEY = "popupSettings";
     const settings = JSON.parse(localStorage.getItem(STORAGE_KEY) || "{}");
 
@@ -32,9 +27,7 @@ window.addEventListener("DOMContentLoaded", () => {
         }
     }
 
-    /* ---------------------------------------------------------
-       LOAD DATA
-    --------------------------------------------------------- */
+    // Initialize state
     let groceries = JSON.parse(localStorage.getItem("groceries") || "[]")
         .map(item => (typeof item === "string" ? { text: item } : item));
 
@@ -43,9 +36,7 @@ window.addEventListener("DOMContentLoaded", () => {
     let groceriesHistory = [];
     let struckHistory = [];
 
-    /* ---------------------------------------------------------
-       DOM REFERENCES
-    --------------------------------------------------------- */
+    // DOM elements
     const list = document.getElementById("groceries");
     const struckList = document.getElementById("struckList");
     const input = document.getElementById("itemInput");
@@ -55,9 +46,7 @@ window.addEventListener("DOMContentLoaded", () => {
     const delMainBtn = document.getElementById("deletemainlist");
     const darkModeBtn = document.getElementById("darkModeToggle");
 
-    /* ---------------------------------------------------------
-       HISTORY MANAGEMENT
-    --------------------------------------------------------- */
+    // History management
     function pushHistory() {
         groceriesHistory.push(JSON.stringify(groceries));
         struckHistory.push(JSON.stringify(struckGroceries));
@@ -75,9 +64,7 @@ window.addEventListener("DOMContentLoaded", () => {
         saveAndRender(false);
     }
 
-    /* ---------------------------------------------------------
-       SAVE + RENDER
-    --------------------------------------------------------- */
+    // Save + render
     function saveAndRender(push = true) {
         if (push) pushHistory();
 
@@ -88,9 +75,7 @@ window.addEventListener("DOMContentLoaded", () => {
         renderStruckList();
     }
 
-    /* ---------------------------------------------------------
-       ADD ITEM
-    --------------------------------------------------------- */
+    // Add item
     function addItem() {
         const val = input.value.trim();
         if (!val) return;
@@ -102,9 +87,7 @@ window.addEventListener("DOMContentLoaded", () => {
         input.focus();
     }
 
-    /* ---------------------------------------------------------
-       RENDER MAIN LIST
-    --------------------------------------------------------- */
+    // Render main list
     function renderList() {
         list.innerHTML = "";
 
@@ -182,7 +165,6 @@ window.addEventListener("DOMContentLoaded", () => {
                 });
 
                 inputEdit.addEventListener("blur", () => {
-                    // Prevent accidental cancel on blur during click
                     if (document.activeElement !== inputEdit) saveEdit();
                 });
             });
@@ -213,9 +195,7 @@ window.addEventListener("DOMContentLoaded", () => {
                 : "Add a grocery item";
     }
 
-    /* ---------------------------------------------------------
-       RENDER STRUCK LIST
-    --------------------------------------------------------- */
+    // Render struck list
     function renderStruckList() {
         struckList.innerHTML = "";
 
@@ -234,9 +214,7 @@ window.addEventListener("DOMContentLoaded", () => {
         });
     }
 
-    /* ---------------------------------------------------------
-       DELETE ALL STRUCK ITEMS
-    --------------------------------------------------------- */
+    // Delete all struck
     function deleteAllStruck() {
         if (!struckGroceries.length) return;
         if (!confirm("Delete all acquired items?")) return;
@@ -246,20 +224,24 @@ window.addEventListener("DOMContentLoaded", () => {
         saveAndRender(false);
     }
 
-    /* ---------------------------------------------------------
-       DARK MODE
-    --------------------------------------------------------- */
+    // DARK MODE — CLEAN, SINGLE VERSION
     function setDarkMode(on) {
         document.body.classList.toggle("dark-mode", on);
         localStorage.setItem("darkMode", on ? "1" : "0");
-        darkModeBtn.textContent = on ? "Light Mode" : "Dark Mode";
+        if (darkModeBtn) darkModeBtn.textContent = on ? "Light Mode" : "Dark Mode";
     }
 
+    // Load saved mode
     setDarkMode(localStorage.getItem("darkMode") === "1");
 
-    /* ---------------------------------------------------------
-       EVENT LISTENERS
-    --------------------------------------------------------- */
+    // Toggle button
+    if (darkModeBtn) {
+        darkModeBtn.addEventListener("click", () =>
+            setDarkMode(!document.body.classList.contains("dark-mode"))
+        );
+    }
+
+    // EVENT LISTENERS
     addBtn.addEventListener("click", addItem);
 
     input.addEventListener("keydown", (e) => {
@@ -270,7 +252,6 @@ window.addEventListener("DOMContentLoaded", () => {
 
     delAllBtn.addEventListener("click", deleteAllStruck);
 
-
     delMainBtn.addEventListener("click", () => {
         if (!confirm("Clear the main list?")) return;
         pushHistory();
@@ -278,42 +259,24 @@ window.addEventListener("DOMContentLoaded", () => {
         saveAndRender(false);
     });
 
-    darkModeBtn.addEventListener("click", () =>
-        setDarkMode(!document.body.classList.contains("dark-mode"))
-    );
-
     document.addEventListener("keydown", (event) => {
         if (event.ctrlKey && event.key.toLowerCase() === "z") undo();
         if (event.ctrlKey && event.shiftKey && event.key === "D") deleteAllStruck();
     });
 
-    // Dark mode toggle
-    function setDarkMode(on) {
-        document.body.classList.toggle('dark-mode', on);
-        localStorage.setItem('darkMode', on ? '1' : '0');
-        if (darkModeBtn) darkModeBtn.textContent = on ? 'Light Mode' : 'Dark Mode';
-    }
-    setDarkMode(localStorage.getItem('darkMode') === '1');
-    if (darkModeBtn) darkModeBtn.addEventListener('click', () => setDarkMode(!document.body.classList.contains('dark-mode')));
-
-    //Clear Main List logic
-    const delmainlistbtn = document.getElementById('deletemainlist');
-    document.addEventListener('click', (e) => {
+    // Clear main list (duplicate listener cleaned)
+    const delmainlistbtn = document.getElementById("deletemainlist");
+    document.addEventListener("click", (e) => {
         if (e.target === delmainlistbtn) {
-            if (groceries.length === 0) {
-                return
-            }
-            else {
-            if (!confirm('Are you sure you want to clear the main list?')) return;
-                pushHistory();
-                groceries = [];
-                saveAndRender();
-        }
-    }
-})
+            if (groceries.length === 0) return;
 
-    /* ---------------------------------------------------------
-       INITIAL RENDER
-    --------------------------------------------------------- */
+            if (!confirm("Are you sure you want to clear the main list?")) return;
+            pushHistory();
+            groceries = [];
+            saveAndRender();
+        }
+    });
+
+    // INITIAL RENDER
     saveAndRender(false);
 });
