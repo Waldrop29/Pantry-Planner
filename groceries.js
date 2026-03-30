@@ -249,9 +249,7 @@ window.addEventListener("DOMContentLoaded", () => {
     });
 
     undoBtn.addEventListener("click", undo);
-
     delAllBtn.addEventListener("click", deleteAllStruck);
-
     delMainBtn.addEventListener("click", () => {
         if (!confirm("Clear the main list?")) return;
         pushHistory();
