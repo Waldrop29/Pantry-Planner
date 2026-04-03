@@ -1,60 +1,124 @@
+/*(animations)*/
 .fade-in {
     opacity: 0;
-    animation: fadeIn 0.5s ease-in forwards;
+    animation: fadeIn 0.5s ease-out forwards;
 }
 
 @keyframes fadeIn {
-    to {
-        opacity: 1;
-    }
-}
-
-@keyframes fadeOut {
-  from {
-    opacity: 1;
-    transform: translateX(0);
-  }
-  to {
-    opacity: 0;
-    transform: translateX(50px);
-  }
+    from { opacity: 0; }
+    to { opacity: 1; }
 }
 
 .fade-out {
-  animation: fadeOut 0.3s ease-out forwards;
+    animation: fadeOut 0.3s ease-out forwards;
 }
 
-@keyframes fadeIn {
-  from { opacity: 0; transform: translateY(10px); }
-  to { opacity: 1; transform: translateY(0); }
+@keyframes fadeOut {
+    from { opacity: 1; transform: translateX(0); }
+    to { opacity: 0; transform: translateX(50px); }
 }
 
-.fade-in {
-  animation: fadeIn 0.5s ease-out forwards;
-}
-
-/* Animation for struckthrough items */
+/*(struck-through animation)*/
 .struck-animate {
     animation: strikeFade 0.7s ease;
 }
+
 @keyframes strikeFade {
-    0% {
-        opacity: 1;
-        transform: scale(1) rotate(0deg);
-        background: #fffbe6;
-    }
-    40% {
-        opacity: 0.7;
-        transform: scale(1.05) rotate(-2deg);
-        background: #fffbe6;
-    }
-    100% {
-        opacity: 0.5;
-        transform: scale(1) rotate(0deg);
-        background: transparent;
-    }
+    0% { opacity: 1; transform: scale(1) rotate(0deg); background: #fffbe6; }
+    40% { opacity: 0.7; transform: scale(1.05) rotate(-2deg); background: #fffbe6; }
+    100% { opacity: 0.5; transform: scale(1) rotate(0deg); background: transparent; }
 }
-/* Undo button styles */
+
+/*(base layout)*/
+html, body {
+    background: #f8f9fa;
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    min-height: 100vh;
+    width: 100%;
+    text-align: center; /*(center all text except list items)*/
+}
+
+#pantryPlanner {
+    color: #343a40;
+    margin-top: 20px;
+    font-size: 2.5em;
+    letter-spacing: 1.5px;
+    font-weight: bold;
+}
+
+/*(main container)*/
+.container {
+    max-width: 400px;
+    margin: 40px auto;
+    background: #fff;
+    border-radius: 10px;
+    box-shadow: 0 2px 12px rgba(0,0,0,0.08);
+    padding: 32px 20px 24px 20px;
+}
+
+/*(section titles)*/
+.section-title {
+    margin: 0 0 12px 0;
+    font-size: 1.2em;
+    color: #343a40;
+}
+
+/*(input row)*/
+#inputRow {
+    display: flex;
+    gap: 8px;
+    margin-bottom: 20px;
+    justify-content: center;
+}
+
+#itemInput {
+    flex: 1;
+    padding: 14px;
+    border: 1px solid #bbb;
+    border-radius: 6px;
+    font-size: 1.1em;
+    text-align: center; /*(center placeholder + typed text)*/
+}
+
+#itemInput:focus {
+    border-color: #007bff;
+    outline: none;
+}
+
+#button {
+    background: #007bff;
+    color: #fff;
+    border: none;
+    border-radius: 6px;
+    padding: 14px 18px;
+    font-size: 1.1em;
+    cursor: pointer;
+}
+
+#button:hover {
+    background: #0056b3;
+}
+
+/*(main list)*/
+#groceries {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    text-align: left; /*(keep list items readable)*/
+}
+
+#groceries li {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 14px 0;
+    border-bottom: 1px solid #eee;
+    font-size: 1.1em;
+}
+
+/*(buttons)*/
 #undo-btn {
     background: #ffc107;
     color: #222;
@@ -62,384 +126,214 @@
     border-radius: 24px;
     padding: 12px 22px;
     font-size: 1.1em;
-    cursor: pointer;
-    transition: background 0.2s;
-    margin-top: 18px;
     display: block;
     width: 100%;
     max-width: 300px;
-    margin-left: auto;
-    margin-right: auto;
-    box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+    margin: 0 auto 18px auto;
 }
-#undo-btn:hover, #undo-btn:active {
+
+#undo-btn:hover {
     background: #e0a800;
 }
-body.dark-mode #undo-btn {
-    background: #e0a800;
-    color: #23272a;
-}
-html, body {
-            background: #f8f9fa;
-            font-family: Arial, sans-serif;
-            margin: 0; padding: 0;
-            min-height: 100vh;
-            width: 100%;
-            -webkit-tap-highlight-color: transparent;
-        }
-        .container {
-            max-width: 400px;
-            margin: 40px auto;
-            background: #fff;
-            border-radius: 10px;
-            box-shadow: 0 2px 12px rgba(0,0,0,0.08);
-            padding: 32px 20px 24px 20px;
-        }
-        h1 {
-            text-align: center;
-            color: #343a40;
-            margin-bottom: 24px;
-            letter-spacing: 1px;
-            font-size: 2em;
-        }
-        #inputRow {
-            display: flex;
-            gap: 8px;
-            margin-bottom: 20px;
-        }
-        #itemInput {
-            flex: 1;
-            padding: 14px 14px;
-            border: 1px solid #bbb;
-            border-radius: 6px;
-            font-size: 1.1em;
-            transition: border-color 0.2s;
-            min-width: 0;
-        }
-        #itemInput:focus {
-            border-color: #007bff;
-            outline: none;
-        }
-        #button {
-            background: #007bff;
-            color: #fff;
-            border: none;
-            border-radius: 6px;
-            padding: 14px 18px;
-            font-size: 1.1em;
-            cursor: pointer;
-            transition: background 0.2s;
-            min-width: 44px;
-            min-height: 44px;
-        }
-        #button:hover, #button:active {
-            background: #0056b3;
-        }
-        #groceries {
-            list-style: none;
-            padding: 0; margin: 0;
-        }
-        #groceries li {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 14px 0;
-            border-bottom: 1px solid #eee;
-            font-size: 1.1em;
-        }
-        #groceries li:last-child {
-            border-bottom: none;
-        }
-        .delete-btn {
-            background: #dc3545;
-            color: #fff;
-            border: none;
-            border-radius: 6px;
-            padding: 8px 16px;
-            font-size: 1em;
-            cursor: pointer;
-            margin-left: 12px;
-            transition: background 0.2s;
-            min-width: 44px;
-            min-height: 44px;
-        }
-        .delete-btn:hover, .delete-btn:active {
-            background: #b52a37;
-        }
-        /* Edit button as icon */
-        .edit-btn {
-            background: transparent;
-            border: none;
-            padding: 6px;
-            margin-left: 8px;
-            cursor: pointer;
-            display: inline-flex;
-            align-items: center;
-            justify-content: center;
-            border-radius: 6px;
-        }
-        .edit-btn:hover, .edit-btn:active {
-            background: rgba(0,0,0,0.04);
-        }
-        /* SVG-based edit icon (tints via currentColor) */
-        .edit-btn {
-            background: transparent;
-            border: none;
-            padding: 6px;
-            margin-left: 8px;
-            cursor: pointer;
-            display: inline-flex;
-            align-items: center;
-            justify-content: center;
-            border-radius: 6px;
-            color: #007bff; /* icon color */
-        }
-        .edit-btn:hover, .edit-btn:active {
-            background: rgba(0,0,0,0.04);
-        }
-        .edit-btn .edit-icon {
-            width: 20px;
-            height: 20px;
-            display: block;
-            fill: currentColor;
-        }
-        @media (max-width: 500px) {
-            .edit-btn .edit-icon { width: 24px; height: 24px; }
-            .edit-btn { padding: 8px; }
-        }
-        /* dark mode tint for edit icon */
-        body.dark-mode .edit-btn { color: #66aaff; }
-        /* Inline edit input styling */
-        .item-text {
-            flex: 1 1 auto;
-            min-width: 0; /* allow text to truncate instead of growing container */
-            margin-right: 8px;
-        }
-        .edit-input {
-            flex: 1 1 auto;
-            min-width: 0;
-            padding: 10px 12px;
-            font-size: 1.05em;
-            border: 1px solid #ccc;
-            border-radius: 6px;
-            transition: border-color 0.15s ease, box-shadow 0.15s ease;
-        }
-        .edit-input:focus {
-            border-color: #007bff;
-            outline: none;
-            box-shadow: 0 0 0 3px rgba(0,123,255,0.12);
-        }
-        @media (max-width: 500px) {
-            .edit-input { padding: 12px; font-size: 1em; }
-        }
-        /* Dark mode for inline edit */
-        body.dark-mode .edit-input {
-            background: #23272a;
-            color: #f1f3f4;
-            border-color: #444;
-        }
-        /* Dark mode styles */
-        body.dark-mode {
-            background: #181a1b;
-        }
-        body.dark-mode .container {
-            background: #23272a;
-            box-shadow: 0 2px 12px rgba(0,0,0,0.25);
-        }
-        body.dark-mode h1 {
-            color: #f1f3f4;
-        }
-        body.dark-mode #itemInput {
-            background: #23272a;
-            color: #f1f3f4;
-            border-color: #444;
-        }
-        body.dark-mode #itemInput:focus {
-            border-color: #66aaff;
-        }
-        body.dark-mode #button {
-            background: #66aaff;
-            color: #181a1b;
-        }
-        body.dark-mode #button:hover, body.dark-mode #button:active {
-            background: #3388cc;
-        }
-        body.dark-mode #groceries li {
-            border-bottom: 1px solid #333;
-            color: #f1f3f4;
-        }
-        body.dark-mode .delete-btn {
-            background: #b52a37;
-            color: #fff;
-        }
-        body.dark-mode .delete-btn:hover, body.dark-mode .delete-btn:active {
-            background: #dc3545;
-        }
-        /* Dark mode toggle button */
-        #darkModeToggle {
-            position: fixed;
-            bottom: 24px;
-            right: 24px;
-            background: #eee;
-            color: #222;
-            border: none;
-            border-radius: 24px;
-            padding: 12px 22px;
-            font-size: 1.1em;
-            cursor: pointer;
-            transition: background 0.2s;
-            z-index: 100;
-            box-shadow: 0 2px 8px rgba(0,0,0,0.12);
-        }
-        body.dark-mode #darkModeToggle {
-            background: #23272a;
-            color: #f1f3f4;
-            border: 1px solid #444;
-        }
-        .del-all-btn {
-              font-size: 0.95em;
-              padding: 10px 10px;
-              background-color: #FF0000;
-            }
-        /* Responsive styles */
-        @media (max-width: 500px) {
-            .container {
-                margin: 0; min-height: 100vh; border-radius: 0; box-shadow: none;
-                padding: 20px 5px 16px 5px;
-            }
-            h1 {
-                font-size: 1.4em;
-            }
-            #inputRow {
-                flex-direction: column;
-                gap: 10px;
-            }
-            #itemInput, #button {
-                font-size: 1em;
-                padding: 12px 10px;
-            }
-            .delete-btn {
-                font-size: 0.95em;
-                padding: 10px 10px;
-            }
-            #darkModeToggle {
-                bottom: 12px;
-                right: 12px;
-                padding: 10px 16px;
-                font-size: 1em;
-            }
-        }
-            #del-all-btn {
-                background: #dc3545;
-                color: #fff;
-                border: none;
-                border-radius: 24px;
-                padding: 12px 22px;
-                font-size: 1.1em;
-                cursor: pointer;
-                transition: background 0.2s;
-                margin-top: 18px;
-                display: block;
-                width: 100%;
-                max-width: 300px;
-                margin-left: auto;
-                margin-right: auto;
-                box-shadow: 0 2px 8px rgba(0,0,0,0.08);
-        /* Remove position: fixed/absolute, bottom, left, z-index */
-                }
-#del-all-btn:hover, #del-all-btn:active {
-    background: #b52a37;
-}
-body.dark-mode #del-all-btn {
-    background: #b52a37;
+
+#deletemainlist,
+#del-all-btn {
+    background: #dc3545;
     color: #fff;
+    border: none;
+    border-radius: 24px;
+    padding: 12px 22px;
+    font-size: 1.1em;
+    display: block;
+    width: 100%;
+    max-width: 300px;
+    margin: 18px auto 0 auto;
 }
-body.dark-mode #del-all-btn:hover, body.dark-mode #del-all-btn:active {
+
+#deletemainlist:hover,
+#del-all-btn:hover {
+    background: #b52a37;
+}
+
+/*(delete button inside list)*/
+.delete-btn {
+    background: #dc3545;
+    color: #fff;
+    border: none;
+    border-radius: 6px;
+    padding: 8px 16px;
+    cursor: pointer;
+}
+
+.delete-btn:hover {
+    background: #b52a37;
+}
+
+/*(edit button)*/
+.edit-btn {
+    background: transparent;
+    border: none;
+    padding: 6px;
+    margin-left: 8px;
+    cursor: pointer;
+    color: #007bff;
+}
+
+.edit-btn:hover {
+    background: rgba(0,0,0,0.04);
+}
+
+.edit-icon {
+    width: 20px;
+    height: 20px;
+    fill: currentColor;
+}
+
+/*(inline edit input)*/
+.edit-input {
+    flex: 1;
+    padding: 10px 12px;
+    font-size: 1.05em;
+    border: 1px solid #ccc;
+    border-radius: 6px;
+    text-align: center;
+}
+
+.edit-input:focus {
+    border-color: #007bff;
+    outline: none;
+}
+
+/*(struck list container)*/
+#struckListContainer {
+    background: #fff;
+    border-radius: 10px;
+    padding: 16px 20px 12px 20px;
+    max-width: 400px;
+    margin: 20px auto;
+    box-shadow: 0 2px 12px rgba(0,0,0,0.08);
+}
+
+#struckList {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    text-align: left; /*(keep acquired items readable)*/
+}
+
+/*(dark mode — improved contrast but same palette)*/
+body.dark-mode {
+    background: #181a1b;
+    color: #f1f3f4;
+}
+
+body.dark-mode .container,
+body.dark-mode #struckListContainer {
+    background: #23272a;
+    color: #f1f3f4;
+    box-shadow: 0 2px 12px rgba(0,0,0,0.25);
+}
+
+body.dark-mode #pantryPlanner,
+body.dark-mode .section-title {
+    color: #f1f3f4;
+}
+
+body.dark-mode #itemInput {
+    background: #2b2f31;
+    color: #f1f3f4;
+    border-color: #555;
+}
+
+body.dark-mode #itemInput:focus {
+    border-color: #66aaff;
+}
+
+body.dark-mode #button {
+    background: #66aaff;
+    color: #181a1b;
+}
+
+body.dark-mode #button:hover {
+    background: #3388cc;
+}
+
+body.dark-mode #groceries li {
+    border-bottom: 1px solid #333;
+    color: #f1f3f4;
+}
+
+body.dark-mode .delete-btn {
+    background: #b52a37;
+}
+
+body.dark-mode .delete-btn:hover {
     background: #dc3545;
 }
-/* Responsive */
+
+body.dark-mode .edit-btn {
+    color: #66aaff;
+}
+
+body.dark-mode .edit-input {
+    background: #2b2f31;
+    color: #f1f3f4;
+    border-color: #555;
+}
+
+body.dark-mode #undo-btn {
+    background: #e0a800;
+    color: #222;
+}
+
+body.dark-mode #undo-btn:hover {
+    background: #cc9901;
+}
+
+body.dark-mode #deletemainlist,
+body.dark-mode #del-all-btn {
+    background: #b52a37;
+}
+
+body.dark-mode #deletemainlist:hover,
+body.dark-mode #del-all-btn:hover {
+    background: #dc3545;
+}
+
+/*(dark mode toggle)*/
+#darkModeToggle {
+    position: fixed;
+    bottom: 24px;
+    right: 24px;
+    background: #eee;
+    color: #222;
+    border: none;
+    border-radius: 24px;
+    padding: 12px 22px;
+    cursor: pointer;
+}
+
+body.dark-mode #darkModeToggle {
+    background: #23272a;
+    color: #f1f3f4;
+    border: 1px solid #444;
+}
+
+/*(responsive)*/
 @media (max-width: 500px) {
-    #del-all-btn {
-        align-self: center;
+    .container {
+        margin: 0;
+        min-height: 100vh;
+        border-radius: 0;
+        box-shadow: none;
+    }
+
+    #inputRow {
+        flex-direction: column;
+    }
+
+    #darkModeToggle {
         bottom: 12px;
-        left: 12px;
-        padding: 10px 16px;
-        font-size: 1em;
+        right: 12px;
     }
 }
-    body.dark-mode #struckListContainer {
-                border-bottom: 1px solid #333;
-                color: #f1f3f4;
-                border-style: rounded;
-                margin-bottom: 12px;
-                padding-bottom: 8px;
-                text-align: center;
-                font-size: 1.2em;
-                font-weight: bold;
-                background-color: #23272a;
-                box-shadow: 0 2px 12px rgba(0,0,0,0.25);
-                border-radius: 10px;
-                padding: 16px 20px 12px 20px;
-                margin-top: 20px;
-                max-width: 400px;
-                margin-left: auto;
-                margin-right: auto;
- }       #struckListContainer {
-                border-bottom: 1px solid #eee;
-                color: #343a40;
-                border-style: rounded;
-                margin-bottom: 12px;
-                padding-bottom: 8px;
-                text-align: center;
-                font-size: 1.2em;
-                font-weight: bold;
-                background-color: #ffffff;
-                box-shadow: 0 2px 12px rgba(0,0,0,0.08);
-                border-radius: 10px;
-                padding: 16px 20px 12px 20px;
-                margin-top: 20px;
-                max-width: 400px;
-                margin-left: auto;
-                margin-right: auto;
-        }
-        #struckList {
-            list-style: none;
-            padding: 0; margin: 0;
-              max-height: none;
-              overflow: hidden;
-        }
-        #struckList li {
-            padding: 10px 0;
-            border-bottom: 1px solid #eee;
-            font-size: 1.1em;
-        }
-        #struckList li:last-child {
-            border-bottom: none;
-        }
-        #deletemainlist {
-            background: #dc3545;
-            color: #fff;
-            border: none;
-            border-radius: 24px;
-            padding: 12px 22px;
-            font-size: 1.1em;
-            cursor: pointer;
-            transition: background 0.2s;
-            margin-top: 18px;
-            display: block;
-            width: 100%;
-            max-width: 300px;
-            margin-left: auto;
-            margin-right: auto;
-            box-shadow: 0 2px 8px rgba(0,0,0,0.08);
-        }
-        #deletemainlist:hover, #deletemainlist:active {
-            background: #b52a37;
-        }
-        body.dark-mode #deletemainlist {
-            background: #b52a37;
-            color: #fff;
-        }
-        body.dark-mode #deletemainlist:hover, body.dark-mode #deletemainlist:active {
-            background: #dc3545;
-        }
