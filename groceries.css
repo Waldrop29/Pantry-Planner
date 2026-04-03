@@ -1,14 +1,12 @@
-
-/* Fade Animations               */
-
+/*(animations)*/
 .fade-in {
     opacity: 0;
     animation: fadeIn 0.5s ease-out forwards;
 }
 
 @keyframes fadeIn {
-    from { opacity: 0; transform: translateY(10px); }
-    to   { opacity: 1; transform: translateY(0); }
+    from { opacity: 0; }
+    to { opacity: 1; }
 }
 
 .fade-out {
@@ -17,34 +15,21 @@
 
 @keyframes fadeOut {
     from { opacity: 1; transform: translateX(0); }
-    to   { opacity: 0; transform: translateX(50px); }
+    to { opacity: 0; transform: translateX(50px); }
 }
 
-/* Struck-through animation */
+/*(struck-through animation)*/
 .struck-animate {
     animation: strikeFade 0.7s ease;
 }
 
 @keyframes strikeFade {
-    0% {
-        opacity: 1;
-        transform: scale(1) rotate(0deg);
-        background: #fffbe6;
-    }
-    40% {
-        opacity: 0.7;
-        transform: scale(1.05) rotate(-2deg);
-        background: #fffbe6;
-    }
-    100% {
-        opacity: 0.5;
-        transform: scale(1) rotate(0deg);
-        background: transparent;
-    }
+    0% { opacity: 1; transform: scale(1) rotate(0deg); background: #fffbe6; }
+    40% { opacity: 0.7; transform: scale(1.05) rotate(-2deg); background: #fffbe6; }
+    100% { opacity: 0.5; transform: scale(1) rotate(0deg); background: transparent; }
 }
 
-/* Base Layout                   */
-
+/*(base layout)*/
 html, body {
     background: #f8f9fa;
     font-family: Arial, sans-serif;
@@ -52,9 +37,18 @@ html, body {
     padding: 0;
     min-height: 100vh;
     width: 100%;
-    -webkit-tap-highlight-color: transparent;
+    text-align: center; /*(center all text except list items)*/
 }
 
+#pantryPlanner {
+    color: #343a40;
+    margin-top: 20px;
+    font-size: 2.5em;
+    letter-spacing: 1.5px;
+    font-weight: bold;
+}
+
+/*(main container)*/
 .container {
     max-width: 400px;
     margin: 40px auto;
@@ -64,20 +58,19 @@ html, body {
     padding: 32px 20px 24px 20px;
 }
 
-h1 {
-    text-align: center;
+/*(section titles)*/
+.section-title {
+    margin: 0 0 12px 0;
+    font-size: 1.2em;
     color: #343a40;
-    margin-bottom: 24px;
-    letter-spacing: 1px;
-    font-size: 2em;
 }
 
-/* Input Row                     */
-
+/*(input row)*/
 #inputRow {
     display: flex;
     gap: 8px;
     margin-bottom: 20px;
+    justify-content: center;
 }
 
 #itemInput {
@@ -86,8 +79,7 @@ h1 {
     border: 1px solid #bbb;
     border-radius: 6px;
     font-size: 1.1em;
-    transition: border-color 0.2s;
-    min-width: 0;
+    text-align: center; /*(center placeholder + typed text)*/
 }
 
 #itemInput:focus {
@@ -103,22 +95,18 @@ h1 {
     padding: 14px 18px;
     font-size: 1.1em;
     cursor: pointer;
-    transition: background 0.2s;
-    min-width: 44px;
-    min-height: 44px;
 }
 
-#button:hover,
-#button:active {
+#button:hover {
     background: #0056b3;
 }
 
-/* Grocery List                  */
-
+/*(main list)*/
 #groceries {
     list-style: none;
     padding: 0;
     margin: 0;
+    text-align: left; /*(keep list items readable)*/
 }
 
 #groceries li {
@@ -130,31 +118,7 @@ h1 {
     font-size: 1.1em;
 }
 
-#groceries li:last-child {
-    border-bottom: none;
-}
-
-/* Buttons                       */
-
-.delete-btn {
-    background: #dc3545;
-    color: #fff;
-    border: none;
-    border-radius: 6px;
-    padding: 8px 16px;
-    font-size: 1em;
-    cursor: pointer;
-    margin-left: 12px;
-    transition: background 0.2s;
-    min-width: 44px;
-    min-height: 44px;
-}
-
-.delete-btn:hover,
-.delete-btn:active {
-    background: #b52a37;
-}
-
+/*(buttons)*/
 #undo-btn {
     background: #ffc107;
     color: #222;
@@ -162,175 +126,123 @@ h1 {
     border-radius: 24px;
     padding: 12px 22px;
     font-size: 1.1em;
-    cursor: pointer;
-    transition: background 0.2s;
     display: block;
     width: 100%;
     max-width: 300px;
-    margin: 18px auto 0 auto;
-    box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+    margin: 0 auto 18px auto;
 }
-#del-all-btn,
-#deletemainlist {
+
+#undo-btn:hover {
+    background: #e0a800;
+}
+
+#deletemainlist,
+#del-all-btn {
     background: #dc3545;
     color: #fff;
     border: none;
     border-radius: 24px;
     padding: 12px 22px;
     font-size: 1.1em;
-    cursor: pointer;
-    transition: background 0.2s;
     display: block;
     width: 100%;
     max-width: 300px;
     margin: 18px auto 0 auto;
-    box-shadow: 0 2px 8px rgba(0,0,0,0.08);
 }
 
-#undo-btn:hover {
-    background: #e0a800;
-}
-#del-all-btn:hover,
-#deletemainlist:hover {
-    background: #b52a37;
-}
-
-/* Delete all struck items button (red variant) */
-#del-all-btn {
-    background: #dc3545;
-    color: #fff;
-}
-
+#deletemainlist:hover,
 #del-all-btn:hover {
     background: #b52a37;
 }
 
-/* Edit Button                   */
+/*(delete button inside list)*/
+.delete-btn {
+    background: #dc3545;
+    color: #fff;
+    border: none;
+    border-radius: 6px;
+    padding: 8px 16px;
+    cursor: pointer;
+}
 
+.delete-btn:hover {
+    background: #b52a37;
+}
+
+/*(edit button)*/
 .edit-btn {
     background: transparent;
     border: none;
     padding: 6px;
     margin-left: 8px;
     cursor: pointer;
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    border-radius: 6px;
     color: #007bff;
 }
 
-.edit-btn:hover,
-.edit-btn:active {
+.edit-btn:hover {
     background: rgba(0,0,0,0.04);
 }
 
-.edit-btn .edit-icon {
+.edit-icon {
     width: 20px;
     height: 20px;
     fill: currentColor;
 }
 
-@media (max-width: 500px) {
-    .edit-btn .edit-icon {
-        width: 24px;
-        height: 24px;
-    }
-    .edit-btn {
-        padding: 8px;
-    }
-}
-
-/* Inline Edit Input             */
-
-.item-text {
-    flex: 1 1 auto;
-    min-width: 0;
-    margin-right: 8px;
-}
-
+/*(inline edit input)*/
 .edit-input {
-    flex: 1 1 auto;
-    min-width: 0;
+    flex: 1;
     padding: 10px 12px;
     font-size: 1.05em;
     border: 1px solid #ccc;
     border-radius: 6px;
-    transition: border-color 0.15s ease, box-shadow 0.15s ease;
+    text-align: center;
 }
 
 .edit-input:focus {
     border-color: #007bff;
     outline: none;
-    box-shadow: 0 0 0 3px rgba(0,123,255,0.12);
 }
 
-#pantryPlanner {
-    text-align: center;
-    color: #343a40;
-    margin-top: 20px;
-    font-size: 2.5em;
-    letter-spacing: 1.5px;
-    font-weight: bold;
-}
-
-/* Struck List Container         */
-
+/*(struck list container)*/
 #struckListContainer {
-    border-bottom: 1px solid #eee;
-    color: #343a40;
-    margin-bottom: 12px;
-    padding-bottom: 8px;
-    text-align: center;
-    font-size: 1.2em;
-    font-weight: bold;
-    background-color: #ffffff;
-    box-shadow: 0 2px 12px rgba(0,0,0,0.08);
+    background: #fff;
     border-radius: 10px;
     padding: 16px 20px 12px 20px;
-    margin-top: 20px;
     max-width: 400px;
-    margin-left: auto;
-    margin-right: auto;
+    margin: 20px auto;
+    box-shadow: 0 2px 12px rgba(0,0,0,0.08);
 }
 
 #struckList {
     list-style: none;
     padding: 0;
     margin: 0;
-    max-height: none;
-    overflow: hidden;
+    text-align: left; /*(keep acquired items readable)*/
 }
 
-#struckList li {
-    padding: 10px 0;
-    border-bottom: 1px solid #eee;
-    font-size: 1.1em;
-}
-
-#struckList li:last-child {
-    border-bottom: none;
-}
-
-/* Dark Mode                     */
-
+/*(dark mode — improved contrast but same palette)*/
 body.dark-mode {
     background: #181a1b;
+    color: #f1f3f4;
 }
 
-body.dark-mode .container {
+body.dark-mode .container,
+body.dark-mode #struckListContainer {
     background: #23272a;
+    color: #f1f3f4;
     box-shadow: 0 2px 12px rgba(0,0,0,0.25);
 }
 
-body.dark-mode h1 {
+body.dark-mode #pantryPlanner,
+body.dark-mode .section-title {
     color: #f1f3f4;
 }
 
 body.dark-mode #itemInput {
-    background: #23272a;
+    background: #2b2f31;
     color: #f1f3f4;
-    border-color: #444;
+    border-color: #555;
 }
 
 body.dark-mode #itemInput:focus {
@@ -359,31 +271,14 @@ body.dark-mode .delete-btn:hover {
     background: #dc3545;
 }
 
-body.dark-mode #pantryPlanner {
-    color: #f1f3f4;
-}
-
 body.dark-mode .edit-btn {
     color: #66aaff;
 }
 
 body.dark-mode .edit-input {
-    background: #23272a;
+    background: #2b2f31;
     color: #f1f3f4;
-    border-color: #444;
-}
-
-body.dark-mode #struckListContainer {
-    background-color: #23272a;
-    color: #f1f3f4;
-    border-bottom: 1px solid #333;
-    box-shadow: 0 2px 12px rgba(0,0,0,0.25);
-}
-
-body.dark-mode #del-all-btn,
-body.dark-mode #deletemainlist {
-    background: #b52a37;
-    color: #fff;
+    border-color: #555;
 }
 
 body.dark-mode #undo-btn {
@@ -391,16 +286,21 @@ body.dark-mode #undo-btn {
     color: #222;
 }
 
-body.dark-mode #del-all-btn:hover,
-body.dark-mode #deletemainlist:hover {
-    background: #dc3545;
-}
 body.dark-mode #undo-btn:hover {
     background: #cc9901;
 }
 
-/* Dark Mode Toggle Button       */
+body.dark-mode #deletemainlist,
+body.dark-mode #del-all-btn {
+    background: #b52a37;
+}
 
+body.dark-mode #deletemainlist:hover,
+body.dark-mode #del-all-btn:hover {
+    background: #dc3545;
+}
+
+/*(dark mode toggle)*/
 #darkModeToggle {
     position: fixed;
     bottom: 24px;
@@ -410,11 +310,7 @@ body.dark-mode #undo-btn:hover {
     border: none;
     border-radius: 24px;
     padding: 12px 22px;
-    font-size: 1.1em;
     cursor: pointer;
-    transition: background 0.2s;
-    z-index: 100;
-    box-shadow: 0 2px 8px rgba(0,0,0,0.12);
 }
 
 body.dark-mode #darkModeToggle {
@@ -423,41 +319,21 @@ body.dark-mode #darkModeToggle {
     border: 1px solid #444;
 }
 
-/* Responsive                    */
-
+/*(responsive)*/
 @media (max-width: 500px) {
     .container {
         margin: 0;
         min-height: 100vh;
         border-radius: 0;
         box-shadow: none;
-        padding: 20px 5px 16px 5px;
-    }
-
-    h1 {
-        font-size: 1.4em;
     }
 
     #inputRow {
         flex-direction: column;
-        gap: 10px;
-    }
-
-    #itemInput,
-    #button {
-        font-size: 1em;
-        padding: 12px 10px;
-    }
-
-    .delete-btn {
-        font-size: 0.95em;
-        padding: 10px 10px;
     }
 
     #darkModeToggle {
         bottom: 12px;
         right: 12px;
-        padding: 10px 16px;
-        font-size: 1em;
     }
 }
