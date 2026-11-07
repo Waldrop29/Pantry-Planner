@@ -1,0 +1,38 @@
+name: Repository Autobot Workflow
+
+# This controls when the bot wakes up. Right now, it wakes up when you push code or open an issue.
+on:
+  push:
+    branches: [ main ]
+  issues:
+    types: [ opened ]
+
+jobs:
+  activate-bot:
+    runs-on: ubuntu-latest
+    
+    steps:
+      # Step A: Clone your code onto the secure GitHub runner machine
+      - name: Deploy Code to Runner
+        uses: actions/checkout@v4
+
+      # Step B: Set up the Git persona so commits are clearly marked as the bot
+      - name: Configure Bot Persona
+        run: |
+          git config --global user.name "github-actions[bot]"
+          git config --global user.email "41898282+github-actions[bot]@://github.com"
+
+      # Step C: The payload task. It modifies a log file or creates one if it doesn't exist.
+      - name: Execute Autobot Operations
+        run: |
+          echo "### Autobot Execution Log" > autobot-status.md
+          echo "Status: Operational 🤖" >> autobot-status.md
+          echo "Last run initialized on: $(date)" >> autobot-status.md
+
+      # Step D: Securely push the modified file back into your repository
+      - name: Commit and Push Changes
+        run: |
+          git add autobot-status.md
+          # Only commit if changes actually occurred to prevent workflow loop errors
+          git diff-index --quiet HEAD || git commit -m "chore: automated status update by autobot"
+          git push
