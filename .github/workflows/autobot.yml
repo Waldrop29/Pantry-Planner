@@ -1,43 +1,34 @@
-name: Repository Autobot Workflow
+name: Automated Feature PR Creator
 
+# 1 & 2: Wakes up whenever you push ANY new feature branch to GitHub (except main)
 on:
   push:
-    branches: [ main ]
+    branches-ignore:
+      - main
 
-# Explicitly grant the runner permission to write code and manage PRs
 permissions:
-  contents: write
-  pull-requests: write
+  pull-requests: write # Crucial so the bot can open PRs for you
 
 jobs:
-  activate-bot:
+  create-pr:
     runs-on: ubuntu-latest
     
     steps:
-      # 1. Download your repo code onto the runner
-      - name: Deploy Code to Runner
+      # 3: The bot wakes up and downloads the code you just pushed
+      - name: Checkout Feature Code
         uses: actions/checkout@v4
 
-      # 2. Identify the bot to Git
-      - name: Configure Bot Persona
-        run: |
-          git config --global user.name "github-actions[bot]"
-          git config --global user.email "41898282+github-actions[bot]@://github.com"
-
-      # 3. Create or update your file
-      - name: Execute Autobot Operations
-        run: |
-          echo "### 🤖 Autobot Control Panel" > bot_status.md
-          echo "Last run completed successfully on: $(date)" >> bot_status.md
-          echo "Operating entirely through automated PR branches!" >> bot_status.md
-
-      # 4. Safely package the changes into a new branch and open a PR
-      - name: Create Pull Request Safely
+      # 4: The bot uses GitHub's API to automatically generate the Pull Request into main
+      - name: Automatically Open PR into Main
         uses: peter-evans/create-pull-request@v7
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
-          commit-message: "chore: automated status update by autobot"
-          title: "🤖 Autobot Status Update"
-          body: "This Pull Request was safely generated automatically by your repository autobot workflow to comply with branch protection rules."
-          branch: autobot/status-update
-          base: main
+          commit-message: "docs: automatic branch sync"
+          title: "🚀 Feature Deploy: Merging ${{ github.ref_name }} into Main"
+          body: |
+            ## 🤖 Automated Bot PR
+            Hey! Your repository autobot noticed you just pushed some fresh code to the branch `[${{ github.ref_name }}]`.
+            
+            I have generated this Pull Request automatically so you don't have to! Review your HTML/CSS/JS changes below and click **Merge** when you're ready to deploy it to main.
+          branch: ${{ github.ref_name }} # Keeps it locked to the feature branch you pushed
+          base: main                     # Targets your locked down main branch
