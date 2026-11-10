@@ -53,7 +53,7 @@ window.addEventListener("DOMContentLoaded", () => {
     "packets", "cartons", "lbs", "oz", "doz", "cups",
     "tbsp", "tsp", "gallons", "liters",
     "bags", "bottles", "jars", "cans", "boxes", "Miscellaneous",
-    "Pieces", "Spoons", "Slices", "Cloves", "Heads", "Strips", "Sprigs", "Bulbs", "Bunches", "Feet", "Inches", "Yards", "Meters", "Centimeters", ""
+    "Pieces", "Spoons", "Slices", "Cloves", "Heads", "Strips", "Sprigs", "Bulbs", "Bunches", "Feet", "Inches", "Yards", "Meters", "Centimeters", "Other", ""
   ];
 
   // *load saved lists*
