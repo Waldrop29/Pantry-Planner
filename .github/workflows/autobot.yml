@@ -18,6 +18,10 @@ jobs:
       - name: Checkout Feature Code
         uses: actions/checkout@v4
 
+      # 3: The bot wakes up and downloads the code you just pushed
+      - name: Checkout Feature Code
+        uses: actions/checkout@v4
+
       # 4: The bot uses GitHub's API to automatically generate the Pull Request into main
       - name: Automatically Open PR into Main
         uses: peter-evans/create-pull-request@v7
