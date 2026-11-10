@@ -1,9 +1,6 @@
 name: Automated Feature PR Creator
 
-<<<<<<< HEAD
-=======
 # 1 & 2: Wakes up whenever you push ANY new feature branch to GitHub (except main)
->>>>>>> 6588ff823e9aa50121b95d20f6341b265c7e1fdc
 on:
   push:
     branches-ignore:
@@ -12,39 +9,15 @@ on:
 permissions:
   pull-requests: write # Crucial so the bot can open PRs for you
 
-# This block explicitly forces GitHub to give this specific run write access
-permissions:
-  contents: write
-  issues: write
-
 jobs:
   create-pr:
     runs-on: ubuntu-latest
     
     steps:
-<<<<<<< HEAD
-      - name: Deploy Code to Runner
+      # 3: The bot wakes up and downloads the code you just pushed
+      - name: Checkout Feature Code
         uses: actions/checkout@v4
 
-      # Explicitly use the default GITHUB_TOKEN for git authentication
-      - name: Configure Bot Persona
-        run: |
-          git config --global user.name "github-actions[bot]"
-          git config --global user.email "41898282+github-actions[bot]@://github.com"
-          git remote set-url origin https://x-access-token:${{ secrets.GITHUB_TOKEN }}@://github.com{{ github.repository }}.git
-
-      - name: Execute Autobot Operations
-        run: |
-          echo "### Autobot Execution Log" > autobot-status.md
-          echo "Status: Operational 🤖" >> autobot-status.md
-          echo "Last run initialized on: $(date)" >> autobot-status.md
-
-      - name: Commit and Push Changes
-        run: |
-          git add autobot-status.md
-          git diff-index --quiet HEAD || git commit -m "chore: automated status update by autobot"
-          git push origin main
-=======
       # 3: The bot wakes up and downloads the code you just pushed
       - name: Checkout Feature Code
         uses: actions/checkout@v4
@@ -63,4 +36,3 @@ jobs:
             I have generated this Pull Request automatically so you don't have to! Review your HTML/CSS/JS changes below and click **Merge** when you're ready to deploy it to main.
           branch: ${{ github.ref_name }} # Keeps it locked to the feature branch you pushed
           base: main                     # Targets your locked down main branch
->>>>>>> 6588ff823e9aa50121b95d20f6341b265c7e1fdc
