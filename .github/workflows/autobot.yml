@@ -3,37 +3,36 @@ name: Repository Autobot Workflow
 on:
   push:
     branches: [ main ]
-  issues:
-    types: [ opened ]
 
-# This block explicitly forces GitHub to give this specific run write access
+# Forces GitHub to grant this specific runner permission to save files back to your repo
 permissions:
   contents: write
-  issues: write
 
 jobs:
   activate-bot:
     runs-on: ubuntu-latest
     
     steps:
+      # 1. Download your repo code onto the runner
       - name: Deploy Code to Runner
         uses: actions/checkout@v4
 
-      # Explicitly use the default GITHUB_TOKEN for git authentication
+      # 2. Identify the bot to Git
       - name: Configure Bot Persona
         run: |
           git config --global user.name "github-actions[bot]"
           git config --global user.email "41898282+github-actions[bot]@://github.com"
-          git remote set-url origin https://x-access-token:${{ secrets.GITHUB_TOKEN }}@://github.com{{ github.repository }}.git
 
+      # 3. Create/update a file (This is your bot writing code/text by itself!)
       - name: Execute Autobot Operations
         run: |
-          echo "### Autobot Execution Log" > autobot-status.md
-          echo "Status: Operational 🤖" >> autobot-status.md
-          echo "Last run initialized on: $(date)" >> autobot-status.md
+          echo "### 🤖 Autobot Control Panel" > bot_status.md
+          echo "Last run completed successfully on: $(date)" >> bot_status.md
+          echo "No external API keys required!" >> bot_status.md
 
+      # 4. Safely push the code changes using a built-in secure method
       - name: Commit and Push Changes
         run: |
-          git add autobot-status.md
+          git add bot_status.md
           git diff-index --quiet HEAD || git commit -m "chore: automated status update by autobot"
           git push origin main
