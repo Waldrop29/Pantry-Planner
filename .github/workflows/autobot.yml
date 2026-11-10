@@ -4,9 +4,10 @@ on:
   push:
     branches: [ main ]
 
-# Forces GitHub to grant this specific runner permission to save files back to your repo
+# Explicitly grant the runner permission to write code and manage PRs
 permissions:
   contents: write
+  pull-requests: write
 
 jobs:
   activate-bot:
@@ -23,16 +24,20 @@ jobs:
           git config --global user.name "github-actions[bot]"
           git config --global user.email "41898282+github-actions[bot]@://github.com"
 
-      # 3. Create/update a file (This is your bot writing code/text by itself!)
+      # 3. Create or update your file
       - name: Execute Autobot Operations
         run: |
           echo "### 🤖 Autobot Control Panel" > bot_status.md
           echo "Last run completed successfully on: $(date)" >> bot_status.md
-          echo "No external API keys required!" >> bot_status.md
+          echo "Operating entirely through automated PR branches!" >> bot_status.md
 
-      # 4. Safely push the code changes using a built-in secure method
-      - name: Commit and Push Changes
-        run: |
-          git add bot_status.md
-          git diff-index --quiet HEAD || git commit -m "chore: automated status update by autobot"
-          git push origin main
+      # 4. Safely package the changes into a new branch and open a PR
+      - name: Create Pull Request Safely
+        uses: peter-evans/create-pull-request@v7
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          commit-message: "chore: automated status update by autobot"
+          title: "🤖 Autobot Status Update"
+          body: "This Pull Request was safely generated automatically by your repository autobot workflow to comply with branch protection rules."
+          branch: autobot/status-update
+          base: main
