@@ -1,38 +1,32 @@
 name: Automated Feature PR Creator
 
-# 1 & 2: Wakes up whenever you push ANY new feature branch to GitHub (except main)
 on:
   push:
     branches-ignore:
       - main
 
 permissions:
-  pull-requests: write # Crucial so the bot can open PRs for you
+  pull-requests: write # Essential permission so the runner can open PRs
 
 jobs:
   create-pr:
     runs-on: ubuntu-latest
     
     steps:
-      # 3: The bot wakes up and downloads the code you just pushed
       - name: Checkout Feature Code
         uses: actions/checkout@v4
 
-      # 3: The bot wakes up and downloads the code you just pushed
-      - name: Checkout Feature Code
-        uses: actions/checkout@v4
-
-      # 4: The bot uses GitHub's API to automatically generate the Pull Request into main
-      - name: Automatically Open PR into Main
-        uses: peter-evans/create-pull-request@v7
-        with:
-          token: ${{ secrets.GITHUB_TOKEN }}
-          commit-message: "docs: automatic branch sync"
-          title: "🚀 Feature Deploy: Merging ${{ github.ref_name }} into Main"
-          body: |
-            ## 🤖 Automated Bot PR
-            Hey! Your repository autobot noticed you just pushed some fresh code to the branch `[${{ github.ref_name }}]`.
+      # Uses GitHub's official command line utility to open a PR directly from your branch
+      - name: Open Pull Request via GitHub CLI
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          # The "|| true" handles it gracefully if a PR for this branch already exists
+          gh pr create \
+            --base main \
+            --head ${{ github.ref_name }} \
+            --title "🚀 Feature Deploy: Merging ${{ github.ref_name }} into Main" \
+            --body "## 🤖 Automated Bot PR
+            Hey! Your repository autobot noticed you just pushed some fresh code to the branch \`${{ github.ref_name }}\`.
             
-            I have generated this Pull Request automatically so you don't have to! Review your HTML/CSS/JS changes below and click **Merge** when you're ready to deploy it to main.
-          branch: ${{ github.ref_name }} # Keeps it locked to the feature branch you pushed
-          base: main                     # Targets your locked down main branch
+            I have generated this Pull Request automatically so you don't have to! Review your Pantry Planner changes below and click **Merge** when you are ready to ship it to main." || true
