@@ -1,10 +1,8 @@
 [{
-  "relation": ["delegate_permission/common.handle_all_urls"],
-  "target": {
-    "namespace": "android_app",
-    "package_name": "io.github.waldrop29.twa",
-    "sha256_cert_fingerprints": [
-      "70:01:51:C0:8D:B8:B9:1D:CE:E4:95:30:2E:74:BE:59:5E:31:30:69:B7:F4:95:1D:11:DE:30:F8:89:F2:8D:1B"
-    ]
-  }
-}]
+      "relation": ["delegate_permission/common.handle_all_urls"],
+      "target": {
+        "namespace": "android_app",
+        "package_name": "io.github.waldrop29.twa",
+        "sha256_cert_fingerprints": ["70:01:51:C0:8D:B8:B9:1D:CE:E4:95:30:2E:74:BE:59:5E:31:30:69:B7:F4:95:1D:11:DE:30:F8:89:F2:8D:1B"]
+      }
+    }]
